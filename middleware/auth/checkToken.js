@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken')
+const user = require('../../user')
+
 verify = (req, res, next) => {
   let token = req.body.token || req.query.token || req.headers['x-access-token']
 
@@ -6,11 +9,9 @@ verify = (req, res, next) => {
       if (err) {
         return res.json({ success: false, message: 'Failed to authenticate token.' })
       } else {
-        if (!USERNAME && !USER_ID) {
-          USERNAME = decoded.username
-          USER_ID = decoded.id
-        }
-        req.decoded = decoded
+        user.username = decoded.username
+        user.id = decoded.id
+        // req.decoded = decoded
         next()
       }
     })

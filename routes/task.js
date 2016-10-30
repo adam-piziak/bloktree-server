@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const db = require('../db')
+const user = require('../user')
 
 router.post('/create', (req, res) => {
   db.createTask(USER_ID, req.body.task, (err, success) => {
@@ -33,7 +34,7 @@ router.post('/delete', (req, res) => {
 })
 
 router.post('/getAll', (req, res) => {
-  db.getAllTasks(USER_ID, (err, tasks) => {
+  db.getAllTasks((err, tasks) => {
     if (err) {
       console.error(err)
       res.json({success: false, error: err})
