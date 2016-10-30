@@ -32,4 +32,17 @@ router.post('/delete', (req, res) => {
   })
 })
 
+router.post('/getAll', (req, res) => {
+  db.getAllTasks(USER_ID, (err, tasks) => {
+    if (err) {
+      console.error(err)
+      res.json({success: false, error: err})
+    }
+    else {
+      console.log(tasks)
+      res.json({success: true, tasks})
+    }
+  })
+})
+
 module.exports = router

@@ -1,8 +1,7 @@
-module.exports = (connection){
-  getUsers: () => {
-    connection.query('SELECT * FROM users', (err, rows) => {
-      for (user in rows)
-        console.log(rows[user].username)
-    })
-  }
+let user = {
+  id: undefined,
+  username: undefined,
+  password: undefined
 }
+
+module.exports = user
