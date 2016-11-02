@@ -4,7 +4,7 @@ const db = require('../db')
 const user = require('../user')
 
 router.post('/create', (req, res) => {
-  db.createTask(USER_ID, req.body.task, (err, success) => {
+  db.createTask(req.body.task, (err, success) => {
     if (err){
       res.json({success: false})
     } else {
@@ -14,7 +14,7 @@ router.post('/create', (req, res) => {
 })
 
 router.post('/edit', (req, res) => {
-  db.editTask(USER_ID, req.body.edit, (err, success) => {
+  db.editTask(req.body.edit, (err, success) => {
     if (err) {
       res.json({ success: false })
     } else {
@@ -24,7 +24,7 @@ router.post('/edit', (req, res) => {
 })
 
 router.post('/delete', (req, res) => {
-  db.deleteTask(USER_ID, req.body.taskId, (err, success) => {
+  db.deleteTask(req.body.taskId, (err, success) => {
     if (err) {
       res.json({ success: false })
     } else {
@@ -40,7 +40,6 @@ router.post('/getAll', (req, res) => {
       res.json({success: false, error: err})
     }
     else {
-      console.log(tasks)
       res.json({success: true, tasks})
     }
   })

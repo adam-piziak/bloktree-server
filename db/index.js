@@ -10,19 +10,60 @@ const db = mysql.createConnection({ //Connect to Mysql database
 })
 
 db.connect((err)=> {
-  if (err)
-  console.error(err)
+  if (err) console.error(err)
   console.log('Database connection established')
 })
 
 module.exports = {
+  project: {
+    create (project, callback) {
+      const CREATE_PROJECT = "INSERT INTO projects (account_id, name, color) VALUES (?, ?, ?)"
+      db.query(CREATE_PROJECT, [user.id, project.name, project.color], (err) => {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null)
+        }
+      })
+    },
+    edit (edit, callback) {
+      const EDIT_PROJECT = 'UPDATE projects SET name = ?, SET color = ? WHERE id = ? AND account_id = ?'
+      db.query(EDIT_PROJECT, [edit.name, edit.color, edit.id, user.id], (err) => {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null)
+        }
+      })
+    },
+    delete (id, callback) {
+      const DELETE_PROJECT = 'DELETE FROM projects WHERE id = ? and account_id = ?'
+      db.query(DELETE_PROJECT, [id, user.id], (err) => {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null)
+        }
+      })
+    },
+    getAll (callback) {
+      const GET_ALL_PROJECTS = 'SELECT * FROM projects WHERE account_id = ?'
+      db.query(GET_ALL_PROJECTS, [user.id], (err) => {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null, projects)
+        }
+      })
+    }
+  },
   getUsers: (callback) => {
     db.query('SELECT * FROM users', (err, users) => {
       if (err) callback(err)
       let all = []
       for (i in users) {
         let user = {
-          '_id': users[i].id,
+          'id': users[i].id,
           'name': users[i].username,
           'password': users[i].password
         }
@@ -57,7 +98,7 @@ module.exports = {
       callback(null, true)
     })
   },
-  createTask(userId, task, callback) {
+  createTask(task, callback) {
     const data = [ task.name,
                  task.parent,
                  task.project,
