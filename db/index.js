@@ -1,7 +1,6 @@
 const mysql = require('mysql')
 const user = require('../user')
 
-const CREATE_TASK = 'INSERT INTO tasks (name, parent, project, hasChildren, priority, accountId) values (?, ?, ?, ?, ?, ?)'
 const db = mysql.createConnection({ //Connect to Mysql database
   host: '127.0.0.1',
   user: 'root',
@@ -48,11 +47,23 @@ module.exports = {
     },
     getAll (callback) {
       const GET_ALL_PROJECTS = 'SELECT * FROM projects WHERE account_id = ?'
-      db.query(GET_ALL_PROJECTS, [user.id], (err) => {
+      db.query(GET_ALL_PROJECTS, [user.id], (err, projects) => {
         if (err) {
           callback(err)
         } else {
           callback(null, projects)
+        }
+      })
+    }
+  },
+  task: {
+    makeGroup (id, callback) {
+      const MAKE_GROUP = 'UPDATE tasks SET mode = 1 WHERE id = ? AND accountId = ?'
+      db.query(MAKE_GROUP, [id, user.id], (err) => {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null, true)
         }
       })
     }
@@ -99,16 +110,20 @@ module.exports = {
     })
   },
   createTask(task, callback) {
+    const CREATE_TASK = 'INSERT INTO tasks (name, parent, project, mode, priority, accountId) values (?, ?, ?, ?, ?, ?)'
     const data = [ task.name,
-                 task.parent,
-                 task.project,
-                 task.hasChildren,
-                 task.priority,
-                 user.id ]
+                   task.parent,
+                   task.project,
+                   task.mode,
+                   task.priority,
+                   user.id ]
+    console.log(data)
     db.query(CREATE_TASK, data, (err) => {
-      if (err) callback(err)
-
-      callback(null, true)
+      console.log(err)
+      if (err)
+        callback(err, false)
+      else
+        callback(null, true)
     })
   },
   editTask(task, callback) {

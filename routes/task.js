@@ -4,7 +4,7 @@ const db = require('../db')
 const user = require('../user')
 
 router.post('/create', (req, res) => {
-  db.createTask(req.body.task, (err, success) => {
+  db.createTask(req.body.unit, (err, success) => {
     if (err){
       res.json({success: false})
     } else {
@@ -34,6 +34,7 @@ router.post('/delete', (req, res) => {
 })
 
 router.post('/getAll', (req, res) => {
+  console.log('client requesting all tasks')
   db.getAllTasks((err, tasks) => {
     if (err) {
       console.error(err)
@@ -41,6 +42,16 @@ router.post('/getAll', (req, res) => {
     }
     else {
       res.json({success: true, tasks})
+    }
+  })
+})
+
+router.post('/makeGroup', (req, res) => {
+  db.task.makeGroup(req.body.id, (err) => {
+    if (err) {
+      res.json({ success: false, error: err })
+    } else {
+      res.json({ success: true })
     }
   })
 })

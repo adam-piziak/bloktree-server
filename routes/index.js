@@ -9,7 +9,6 @@ const task = require('./task')
 const project = require('./project')
 const user = require('./user')
 
-router.use(express.static(path.join(__dirname, 'public')))
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: false }))
 
@@ -18,9 +17,6 @@ router.use(checkToken) // Make sure valid token is provided before proceeding
 router.use('/task', task)
 router.use('/project', project)
 router.use('/user', user)
-router.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/index.html')
-})
 
 router.use((req, res) => {
   res.status(404).sendFile(__dirname + '/views/404.html')
