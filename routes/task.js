@@ -14,9 +14,10 @@ router.post('/create', (req, res) => {
 })
 
 router.post('/edit', (req, res) => {
-  db.editTask(req.body.edit, (err, success) => {
-    if (err) {
-      res.json({ success: false })
+  db.editTask(req.body.edit, (error, success) => {
+    if (error) {
+      console.log(error)
+      res.json({ success: false, error })
     } else {
       res.json({ success: true })
     }

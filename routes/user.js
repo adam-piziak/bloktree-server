@@ -15,6 +15,19 @@ router.post('/create', (req, res) => {
   })
 })
 
+router.post('/check', (req, res) => {
+  const username = req.body.username
+  db.getUser(username, (err, success) => {
+    if (err) {
+      res.json({err, success: false})
+    } else if (success) {
+      res.json({success: true})
+    } else {
+      res.json({exists: false, success: false})
+    }
+  })
+})
+
 router.post('/delete', (req, res) => {
   const id = user.id
   db.deleteUser(id, (err, success) => {

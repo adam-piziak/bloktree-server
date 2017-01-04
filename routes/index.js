@@ -13,10 +13,11 @@ router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: false }))
 
 router.use('/', auth)
+router.use('/user', user)
 router.use(checkToken) // Make sure valid token is provided before proceeding
 router.use('/task', task)
 router.use('/project', project)
-router.use('/user', user)
+
 
 router.use((req, res) => {
   res.status(404).sendFile(__dirname + '/views/404.html')

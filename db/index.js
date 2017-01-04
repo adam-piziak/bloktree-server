@@ -56,6 +56,7 @@ module.exports = {
       })
     }
   },
+
   task: {
     makeGroup (id, callback) {
       const MAKE_GROUP = 'UPDATE tasks SET mode = 1 WHERE id = ? AND accountId = ?'
@@ -127,13 +128,15 @@ module.exports = {
     })
   },
   editTask(task, callback) {
-    const EDIT_TASK = 'UPDATE tasks SET name = ?, parent = ?, hasChildren = ?, priority = ? WHERE id = ?'
+    const EDIT_TASK = 'UPDATE tasks SET name = ?, parent = ?, project = ?, mode = ?, priority = ? WHERE id = ?'
+    console.log(task.priority)
     const data = [
       task.name,
       task.parent,
-      task.hasChildren,
+      task.project,
+      task.mode,
       task.priority,
-      user.id
+      task.id
     ]
     db.query(EDIT_TASK, data, (err) => {
       if (err) callback(err, false)
